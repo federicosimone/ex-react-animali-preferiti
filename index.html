@@ -10,6 +10,23 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const animalList = () => {
+
+            const animali = ["Cane", "Gatto", "Topo", "Ornitorinco", "Lemure"];
+            return (
+                <details>
+                    <summary>Animali</summary>
+                    <ul>
+                        {animali.map(animale => {
+                            return <li>{animale}</li>
+                        })}
+                    </ul>
+                </details>
+            )
+        }
+
+    </script>
 </head>
 
 <body>
