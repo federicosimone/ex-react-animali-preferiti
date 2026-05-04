@@ -11,18 +11,39 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
+
+
+
+
         const AnimalList = () => {
 
-            const animali = ["Cane", "Gatto", "Topo", "Ornitorinco", "Lemure"];
+            const { useState } = React;
+            const { useEffect } = React;
+
+
+            const [animals, setAnimals] = useState([]);  //parto con un array vuoto, da riempire ad ogni click con onClick 
+
+            const animalsChoices = ["Cane", "Gatto", "Pappagallo", "Cavallo", "Panda"];
+
+
+
             return (
-                <details>
-                    <summary><strong>Animali</strong> </summary>
-                    <ul>
-                        {animali.map(animale => {
-                            return <li>{animale}</li>
-                        })}
-                    </ul>
-                </details>
+                <div>
+                    <button onClick={() => {
+                        const indiceCasuale = Math.floor(Math.random() * animalsChoices.length);
+                        setAnimals([...animals, animalsChoices[indiceCasuale]])  //setAnimals accetta un solo argomento quindi inserisco tutto dentro le quadre
+                        //per aggiungere un elemento senza il push, uso lo spread operator dell'array animals e gli aggiungo un elemento dell'array animalChoices all'indice creato casualmente.
+                    }}>Aggiungi Animale</button>
+                    <details>
+                        <summary><strong>Animali</strong></summary>
+                        <ul>
+                            {animals.map(animale => {
+                                return <li>{animale}</li>
+                            })}
+                        </ul>
+                    </details>
+                </div>
+
             )
         }
 
