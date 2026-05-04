@@ -12,6 +12,29 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
 
+        function Modal({
+            title,
+            content,
+            show = false,
+            onClose = () => { },
+            onConfirm = () => { }
+        }) {
+            return show && ReactDOM.createPortal(
+                <div className="modal-container">
+                    <div className="modal">
+                        <h2>{title}</h2>
+                        <p>{content}</p>
+                        <div>
+                            <button onClick={onClose}>Annulla</button>
+                            <button onClick={onConfirm}>Conferma</button>
+                        </div>
+
+                    </div>
+                </div>,
+                document.body
+            )
+        }
+
 
 
 
@@ -20,24 +43,27 @@
             const { useState } = React;
             const { useEffect } = React;
 
+            const animalsChoices = ["Cane", "Gatto", "Pappagallo", "Cavallo", "Panda"];
+
 
             const [animals, setAnimals] = useState([]);  //parto con un array vuoto, da riempire ad ogni click con onClick 
 
-            const animalsChoices = ["Cane", "Gatto", "Pappagallo", "Cavallo", "Panda"];
+            const [show, setShow] = useState(false);
 
-            function addAnimal() {
-                const indiceCasuale = Math.floor(Math.random() * animalsChoices.length);  //setAnimals accetta un solo argomento quindi inserisco tutto dentro le quadre
-                //per aggiungere un elemento senza il push, uso lo spread operator dell'array animals e gli aggiungo un elemento dell'array animalChoices all'indice creato casualmente.
-                setAnimals([...animals, animalsChoices[indiceCasuale]])
-                return
+            const [animalName, setAnimalName] = useState("");
+
+            const addAnimal = () => {
+                if (!animalName) return;
+                setAnimals(curr => [...curr, animalName])
+                setAnimalName("")
+                setShow(false)
             }
 
 
 
             return (
                 <div>
-                    <button onClick={addAnimal}
-                    >Aggiungi Animale</button>
+                    <button onClick={() => setShow(true)}>Aggiungi Animale</button>
                     <details>
                         <summary><strong>Animali</strong></summary>
                         <ul>
@@ -46,6 +72,20 @@
                             })}
                         </ul>
                     </details>
+                    <Modal
+                        show={show}
+                        onClose={() => setShow(false)}
+                        onConfirm={addAnimal}
+                        title="Aggiungi animale"
+                        content={
+                            <input
+                                type="text"
+                                value={animalName}
+                                onChange={e => setAnimalName(e.target.value)}
+                            />
+
+                        }
+                    />
                 </div>
 
             )
@@ -56,23 +96,7 @@
         const root = createRoot(lista);
         root.render(<AnimalList />);
 
-        function Modal({
-            title,
-            content,
-            show = false,
-            onClose = () => { }
-        }) {
-            return show && ReactDOM.createPortal(
-                <div className="modal-container">
-                    <div className="modal">
-                        <h2>{title}</h2>
-                        <p>{content}</p>
-                        <button onClick={onClose}>Annulla</button>
-                    </div>
-                </div>,
-                document.body
-            )
-        }
+
 
     </script>
 </head>
